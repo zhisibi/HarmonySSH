@@ -64,7 +64,7 @@ struct Terminal {
     this.buffer.addLine(`正在连接 ${this.server.username}@${this.server.host}...`);
 
     // 构建 WebSocket URL
-    const wsUrl = `${ApiService.getWebSocketUrl()}?server=${this.server.id}&token=${ApiService.getToken()}`;
+    const wsUrl = ApiService.getWebSocketSshUrl(this.server.id!);
     
     try {
       this.ws = new WebSocket(wsUrl);
@@ -145,7 +145,10 @@ struct Terminal {
     if (this.ws) {
       // 发送命令（需要编码）
       const cmdData = btoa(cmd + '\n');
-      this.ws.send(JSON.stringify({ data: cmdData }));
+      this.ws.send(JSON.stringify({ 
+        type: 'data', 
+        data: cmdData 
+      }));
     }
 
     this.inputCommand = '';

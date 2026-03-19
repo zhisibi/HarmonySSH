@@ -31,8 +31,8 @@ struct Sftp {
 
   // 进入目录
   async enterDirectory(file: SftpFile) {
-    if (file.isDirectory) {
-      this.currentPath = file.path;
+    if (file.type === 'directory') {
+      this.currentPath = this.currentPath === '/' ? `/${file.name}` : `${this.currentPath}/${file.name}`;
       this.updateBreadcrumb();
       await this.loadFiles();
     } else {
@@ -92,7 +92,7 @@ struct Sftp {
   async deleteFile(file: SftpFile) {
     if (!this.server.id) return;
     
-    const result = await ApiService.sftpDelete(this.server.id, file.path, file.isDirectory);
+    const result = await ApiService.sftpDelete(this.server.id, file.name, file.type === 'directory' ? 'directory' : 'file');
     if (result.success) {
       this.showActions = false;
       this.loadFiles();
@@ -107,8 +107,8 @@ struct Sftp {
 
   // 获取文件图标
   getFileIcon(file: SftpFile): string {
-    if (file.isDirectory) return '📁';
-    if (file.isSymbolicLink) return '🔗';
+    if (file.type === 'directory') return '📁';
+    if (file.type === 'link') return '🔗';
     const ext = file.name.split('.').pop()?.toLowerCase();
     switch (ext) {
       case 'txt': case 'md': case 'log': return '📄';
@@ -293,7 +293,7 @@ struct Sftp {
 
   downloadFile() {
     if (!this.server.id || !this.selectedFile) return;
-    const url = ApiService.getSftpDownloadUrl(this.server.id, this.selectedFile.path);
+    const url = ApiService.getSftpDownloadUrl(this.server.id, this.selectedFile.name);
     // 鸿蒙下载需要在 Ability 中实现，这里简单提示
     console.log('下载:', url);
     this.showActions = false;

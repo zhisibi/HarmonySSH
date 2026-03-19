@@ -184,7 +184,7 @@ export class ApiService {
       const response = await fetch(`${BASE_URL}/api/sftp/rename`, {
         method: 'POST',
         headers: this.getHeaders(),
-        body: JSON.stringify({ server: serverId, oldPath, newPath })
+        body: JSON.stringify({ serverId, oldPath, newPath })
       });
       return await response.json();
     } catch (error) {
@@ -193,9 +193,16 @@ export class ApiService {
     }
   }
 
-  // 获取 WebSocket URL
-  static getWebSocketUrl(): string {
-    return `${WS_URL}/ssh`;
+  // 获取 WebSocket SSH URL
+  static getWebSocketSshUrl(serverId: number): string {
+    const token = this.getToken();
+    return `${WS_URL}/ws/ssh?serverId=${serverId}&token=${token}`;
+  }
+
+  // 获取 WebSocket SFTP URL
+  static getWebSocketSftpUrl(serverId: number): string {
+    const token = this.getToken();
+    return `${WS_URL}/ws/sftp?serverId=${serverId}&token=${token}`;
   }
 
   // 获取 SFTP WebSocket URL
@@ -220,9 +227,8 @@ export interface Server {
 
 export interface SftpFile {
   name: string;
-  path: string;
-  isDirectory: boolean;
-  isSymbolicLink: boolean;
+  type: 'directory' | 'file' | 'link';
   size: number;
-  modifyTime: number;
+  mtime: number;
+  mode: string;
 }
