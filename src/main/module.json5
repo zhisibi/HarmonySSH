@@ -1,0 +1,31 @@
+{
+  "module": {
+    "name": "harmonyssh",
+    "type": "entry",
+    "description": "鸿蒙6 SSH客户端入口",
+    "mainElement": "EntryAbility",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ],
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "abilities": [
+      {
+        "name": "EntryAbility",
+        "srcEntry": "./ets/entry/EntryAbility.ts",
+        "description": "应用入口",
+        "icon": "$media:icon",
+        "label": "HarmonySSH",
+        "startWindowIcon": "$media:icon",
+        "startWindowBackground": "#111827"
+      }
+    ],
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.INTERNET"
+      }
+    ]
+  }
+}

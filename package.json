@@ -1,0 +1,9 @@
+{
+  "name": "harmonyssh",
+  "version": "1.0.0",
+  "description": "鸿蒙6 SSH客户端 - 对接WebSSH后端",
+  "main": "",
+  "author": "大龙虾",
+  "license": "MIT",
+  "dependencies": {}
+}

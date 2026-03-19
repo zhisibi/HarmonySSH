@@ -1,0 +1,10 @@
+{
+  "src": [
+    "pages/Login",
+    "pages/Home",
+    "pages/Terminal",
+    "pages/Sftp",
+    "pages/ServerForm",
+    "pages/Settings"
+  ]
+}
